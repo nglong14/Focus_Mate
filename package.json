@@ -1,0 +1,51 @@
+{
+  "name": "focusmate-2.0",
+  "version": "1.0.0",
+  "description": "An interactive desktop application that promotes students' concentration",
+  "type": "module",
+  "main": "main.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron . --enable-logging",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.focusmate.id",
+    "productName": "FocusMate",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "main.mjs",
+      "src/**/*",
+      "preload.mjs",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "mate/logo.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "firebase": "^10.14.1",
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0",
+    "webrtc": "^1.14.1"
+  }
+}
