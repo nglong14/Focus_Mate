@@ -1,0 +1,101 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('https://images.pexels.com/photos/355027/pexels-photo-355027.jpeg?cs=srgb&dl=pexels-pixabay-355027.jpg&fm=jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    background: linear-gradient(90deg, rgba(46, 139, 87, 0.9), rgba(60, 179, 113, 0.9));
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    font-size: 2.5rem;
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Styling */
+.team-section, .product-section {
+    padding: 3rem;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Transparent white */
+    margin: 2rem 5%;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.team-section:hover, .product-section:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+}
+
+/* Typography */
+h1, h2 {
+    font-family: 'Merriweather', serif; /* Decorative font for titles */
+}
+
+h2 {
+    color: #2e8b57;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+}
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4d4d4d;
+    padding: 0 2rem;
+}
+
+/* Team Container */
+.team-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 2rem;
+    border-radius: 15px;
+}
+
+.team-member {
+    background-color: rgba(240, 255, 240, 0.9); /* Light green */
+    border-radius: 10px;
+    padding: 1rem;
+    width: 220px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Team Member Image */
+.team-member img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 3px solid #2e8b57;
+}
+
+/* Footer */
+footer {
+    background-color: rgba(46, 139, 87, 0.9);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
