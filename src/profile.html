@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/utility.css">
+    <style>
+        .profile-container img#avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ddd;
+        }
+        #owned-backgrounds {
+            margin-top: 40px;
+        }
+        #backgrounds-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .background-item {
+            width: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s;
+            text-align: center;
+            background-color: #fff;
+        }
+        .background-item:hover {
+            transform: scale(1.05);
+        }
+        .background-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .background-item h4 {
+            font-size: 0.9rem;
+            margin: 8px 0;
+            font-weight: 600;
+            color: #333;
+        }
+        #popup-friend-list {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 80%;
+            max-width: 500px;
+        }
+        #popup-friend-list h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        #popup-friend-list ul {
+            list-style: none;
+            padding: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        #popup-friend-list li {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        #popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">FocusMate</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aboutus.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="leaderboard.html">LeaderMates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="store.html">Store</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="notifcation.html">Notification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <h1 class="text-center">User Profile</h1>
+        <div class="card p-4">
+            <div class="row profile-container">
+                <div class="col-md-4 text-center">
+                    <img id="avatar" class="rounded-circle mb-3" src="" alt="User Avatar">
+                </div>
+                <div class="col-md-8">
+                    <button id="addFriend" class="btn btn-primary">Add Friend</button>
+                    <button id="showFriends" class="btn btn-info mt-2">Show Friends</button> <!-- New Show Friends Button -->
+                    <p><strong>Name:</strong> <span id="userName"></span></p>
+                    <div id="user-balance">
+                        Balance: <span id="balance-amount">0</span> coins
+                    </div>
+                    <input type="text" id="nameInput" class="form-control mb-3" placeholder="Enter new name">
+                    <button id="saveName" class="btn btn-primary">Save Name</button>
+                </div>
+            </div>
+            <div class="mt-4">
+                <input type="file" id="avatarInput" class="form-control-file" accept="image/*">
+                <button id="changeAvatar" class="btn btn-secondary mt-3">Change Avatar</button>
+            </div>
+            <button id="logOut" class="btn btn-danger mt-3">Log Out</button>
+            <!-- New Section for Owned Backgrounds -->
+            <div id="owned-backgrounds">
+                <h2>Owned Backgrounds</h2>
+                <div id="backgrounds-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friend List Pop-up -->
+    <div id="popup-overlay"></div>
+    <div id="popup-friend-list">
+        <h2>Your Friends</h2>
+        <ul id="friendList"></ul>
+        <button id="closefriendpopup" class="btn btn-secondary">Close</button>
+    </div>
+
+    <div id="popup" style="display: none;">
+        <p id="message"></p>
+        <button id="closePopup">Close</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="profile_renderer.js"></script>
+</body>
+</html>
+

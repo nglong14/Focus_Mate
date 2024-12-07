@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="assets/utility.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        #chat-box {
+            position: fixed;
+            bottom: 70px; /* Adjust this value to move the chat box higher above the progress bar */
+            left: 10px;
+            width: 300px;
+            max-height: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            padding: 10px;
+            z-index: 200;
+        }
+
+        #messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            padding: 5px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            background-color: #007bff;
+            color: white;
+            text-align: right;
+        }
+
+        .message.received {
+            background-color: #f1f0f0;
+            color: #333;
+        }
+
+        #message-input {
+            width: calc(100% - 50px);
+        }
+
+        #send-btn {
+            width: 40px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .file-icon {
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .file-icon img {
+            width: 24px; /* Adjust size as needed */
+            height: auto;
+        }
+        #chat-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.85); /* Slightly more transparent */
+            border-radius: 12px; /* Smooth rounded corners */
+            padding: 10px; /* Reduced padding */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+            width: 250px; /* Width larger than height */
+            height: auto; /* Height will adjust based on content */
+            max-height: 300px; /* Set a maximum height for the container */
+            overflow: hidden; /* Hide overflow */
+            text-align: center; /* Centered text */
+            z-index: 100; /* Ensure it's above other content */
+        }
+
+        #roomLabel {
+            font-size: 16px; /* Smaller font */
+            font-weight: 600; /* Bold for emphasis */
+            color: #333; /* Darker color for contrast */
+            margin-bottom: 5px; /* Space between room name and buttons */
+            word-wrap: break-word; /* Prevent long room names from breaking layout */
+        }
+
+        button {
+            width: 100%; /* Make buttons full-width */
+            padding: 5px; /* Smaller padding */
+            font-size: 12px; /* Smaller font size */
+            border-radius: 8px; /* Smooth button corners */
+            transition: background-color 0.3s ease; /* Smooth hover transition */
+            margin-top: 5px; /* Space between buttons */
+        }
+
+        #leaveRoom {
+            background-color: #e74c3c; /* Red leave button */
+            color: white;
+        }
+
+        #leaveRoom:hover {
+            background-color: #c0392b; /* Darker red on hover */
+        }
+
+        #changeBackgroundBtn {
+            background-color: transparent;
+            border: 2px solid #007bff; /* Outlined button */
+            color: #007bff;
+        }
+
+        #changeBackgroundBtn:hover {
+            background-color: #007bff; /* Blue background on hover */
+            color: white; /* White text on hover */
+        }
+
+        .room-name {
+            font-family: 'Helvetica Neue', sans-serif;
+            text-transform: uppercase; /* Uppercase room name for emphasis */
+            letter-spacing: 1px; /* Slightly spaced-out letters */
+        }
+        button:hover {
+            background-color: #c0392b;
+        }
+        .btn-secondary {
+            margin-top: 10px;
+        }
+        /* Modal styling */
+        .modal-content img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+        .modal-content img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Progress Bar Container */
+        #progress-bar-container {
+            position: fixed; /* Keep it fixed on the screen */
+            bottom: 20px; /* Position above the chat box */
+            left: 20px; /* Adjust this value to move it left or right */
+            width: 80%; /* Make it take up 80% of the screen width */
+            height: 30px; /* Height of the container */
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+            z-index: 1000; /* Ensure it appears above other content */
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            height: 100%; /* Fill the container height */
+            width: 0; /* Initial width */
+            background: linear-gradient(to right, #4caf50, #81c784); /* Green gradient */
+            border-radius: 15px; /* Rounded corners */
+            transition: width 0.5s ease; /* Smooth transition for width change */
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1100;
+            text-align: center;
+        }
+        #popup button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .modal.fade .modal-dialog {
+            transform: translate(0, -20%);
+            transition: transform 0.3s ease-out;
+        }
+        .modal.show .modal-dialog {
+            transform: translate(0, 0);
+        }
+    </style>
+</head>
+<body id="room-body" style="background-image: url('default_background_url');">
+    <div id="chat-box" class="shadow-lg">
+        <div id="messages"></div> <!-- Keep this here -->
+        <div class="input-group">
+            <label for="file-input" class="file-icon">
+                <img src="path/to/plus-icon.png" alt="Add File" />
+            </label>
+            <input type="file" id="file-input" multiple accept="image/*, .pdf, .docx" />
+            <input id="message-input" type="text" class="form-control" placeholder="Type your message...">
+            <button id="send-btn" class="btn">Send</button>
+        </div>
+    </div>
+    
+    <div id="chat-container" class="shadow-lg p-3">
+        <audio id="audio" autoplay style="display: none;"></audio> <!-- Audio element is now invisible -->
+        <h1 id="roomLabel" class="room-name">Room Name</h1> <!-- Room name will be dynamically updated -->
+        <button id="leaveRoom" class="btn btn-danger btn-sm">Leave</button>
+        <button id="inviteFriendsBtn" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#inviteFriendsModal">Invite Friends</button>
+        <button id="changeBackgroundBtn" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#backgroundModal">Change Background</button>
+        <button id="showParticipantsBtn" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#participantsModal">Show Participants</button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <!-- Modal for inviting friends -->
+    <div class="modal fade" id="inviteFriendsModal" tabindex="-1" aria-labelledby="inviteFriendsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inviteFriendsModalLabel">Invite Friends</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="friendsList" class="list-group">
+                        <!-- Friends will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for showing participants -->
+    <div class="modal fade" id="participantsModal" tabindex="-1" aria-labelledby="participantsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="participantsModalLabel">Participants</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="participantsList" class="list-group">
+                        <!-- Participants will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for background selection -->
+    <div class="modal fade" id="backgroundModal" tabindex="-1" aria-labelledby="backgroundModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="backgroundModalLabel">Choose Background</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-wrap justify-content-center" id="background-options">
+                    <!-- Background options will be loaded here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup" style="display:none;">
+        <h2 id="message"></h2>
+        <button id="closePopup">Close</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="room_renderer.js" defer></script>
+</body>
+</html>
